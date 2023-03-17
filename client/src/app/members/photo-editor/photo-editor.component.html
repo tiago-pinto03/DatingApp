@@ -1,13 +1,15 @@
 <div class="row mb-3" *ngIf="member">
-    <div class="col-2" *ngFor="let photo of member.photos">
-        <img src="{{photo.url}}" alt="photo of user" class="img-thumbnail mb-1">
+    <div class="col-2 mb-1 img-wrapper" *ngFor="let photo of member?.photos">
+        <img src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail mb-1" [class.not-approved]="!photo.isApproved">
+        <div class="text-center img-text" *ngIf="!photo.isApproved">
+            <span class="text-danger">Awaiting approval</span>
+        </div>
             <div class="text-center">
-                <button 
-                class="btn btn-sm"
-                [disabled]="photo.isMain"
+                <button
+                [disabled]="photo.isMain || !photo.isApproved"
                 (click)="setMainPhoto(photo)"
-                [ngClass]="photo.isMain ? 'btn-success active' : 'btn-outline-success'"
-                >Main</button>
+                [ngClass]='photo.isMain ? "btn-success active" : "btn-outlinesuccess"'
+                class="btn btn-sm">Main</button>
                 <button class="btn btn-sm btn-danger"
                 [disabled]="photo.isMain"
                 (click)="deletePhoto(photo.id)"
@@ -52,7 +54,8 @@
             <tbody>
             <tr *ngFor="let item of uploader?.queue">
                 <td><strong>{{ item?.file?.name }}</strong></td>
-                <td *ngIf="uploader?.options?.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                <td *ngIf="uploader?.options?.isHTML5" nowrap>
+                    {{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
             </tr>
             </tbody>
         </table>
@@ -61,7 +64,10 @@
             <div>
                 Queue progress:
                 <div class="progress">
-                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader?.progress + '%' }"></div>
+                    <div 
+                    class="progress-bar" 
+                    role="progressbar" 
+                    [ngStyle]="{ 'width': uploader?.progress + '%' }"></div>
                 </div>
             </div>
             <button type="button" class="btn btn-success btn-s"
@@ -77,7 +83,5 @@
                 <span class="fa fa-trash"></span> Remove all
             </button>
         </div>
-
-    </div>
-
+    </div>       
 </div>

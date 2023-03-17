@@ -19,6 +19,7 @@ export class PhotoEditorComponent implements OnInit{
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
   user: User | undefined;
+  photos: Photo | undefined;
   
 
   constructor(private accountService: AccountService, private memberService: MembersService) {
